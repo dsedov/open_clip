@@ -41,6 +41,7 @@ _RN50x64 = dict(
 
 _VITB32 = dict(
     openai="https://openaipublic.azureedge.net/clip/models/40d365715913c9da98579312b702a82c18be219cc2a73407c4526f58eba950af/ViT-B-32.pt",
+    id_e1="/content/drive/MyDrive/AI/models/vit_b_32_id_e1.pt",
     laion2b_e16="https://github.com/mlfoundations/open_clip/releases/download/v0.2-weights/vit_b_32-laion2b_e16-af8dbd0c.pth",
     laion400m_e31="https://github.com/mlfoundations/open_clip/releases/download/v0.2-weights/vit_b_32-quickgelu-laion400m_e31-d867053b.pt",
     laion400m_e32="https://github.com/mlfoundations/open_clip/releases/download/v0.2-weights/vit_b_32-quickgelu-laion400m_e32-46683a32.pt",
@@ -146,7 +147,9 @@ def download_pretrained(url: str, root: str = os.path.expanduser("~/.cache/clip"
                 warnings.warn(f"{download_target} exists, but the SHA256 checksum does not match; re-downloading the file")
         else:
             return download_target
-
+    if url.startswith('/'):
+        download_target = url 
+        return download_target
     with urllib.request.urlopen(url) as source, open(download_target, "wb") as output:
         with tqdm(total=int(source.info().get("Content-Length")), ncols=80, unit='iB', unit_scale=True) as loop:
             while True:
